@@ -20,18 +20,19 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;  
 
-public class TwoDimensionCode {
+public class TwoDimensionCodeDec {
+	
+	private final static String NETURL = "http://139.198.13.100:7010/resource/M00/00/43/wKgAA1oKik6ASojMAAAB9enLL80510.png";
 
     /** 
      * 解析图像 
-     */  
-	@Test  
-    public void testDecode() {  
-        String filePath = "http://139.198.13.100:7010/resource/M00/00/43/wKgAA1oKik6ASojMAAAB9enLL80510.png";  
+     */    
+    public static String codeDecode(String netUrl) {     
         BufferedImage image;
         URL imgurl = null;
+        String content = null;
         try {  
-        	imgurl = new URL(filePath);
+        	imgurl = new URL(netUrl);
             image = ImageIO.read(imgurl);  
             LuminanceSource source = new BufferedImageLuminanceSource(image);  
             Binarizer binarizer = new HybridBinarizer(source);  
@@ -39,13 +40,17 @@ public class TwoDimensionCode {
             Map<DecodeHintType, Object> hints = new HashMap<DecodeHintType, Object>();  
             hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");  
             Result result = new MultiFormatReader().decode(binaryBitmap, hints);// 对图像进行解码  
-            String content = result.getText();
-            System.out.println("二维码图片中内容：  "+content);  
+            content = result.getText();
         } catch (IOException e) {  
             e.printStackTrace();  
         } catch (NotFoundException e) {  
             e.printStackTrace();  
-        }  
+        } 
+        return content;
     }  
+    
+    public static void main(String[] args) {
+		System.out.println(codeDecode(NETURL));
+	}
 } 
 
